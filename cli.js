@@ -5,7 +5,7 @@ const chalk = require('chalk');
 const meow = require('meow');
 const ora = require('ora');
 const inquirer = require('inquirer');
-const isBin = require('isbin');
+const which = require('which');
 const dateFormat = require('date-fns/format');
 const trim = require('trim');
 const termTitle = require('term-title');
@@ -186,8 +186,11 @@ function play(channelId) {
 function getPlayer() {
   return new Promise((resolve, reject) => {
     for (const player of players) {
-      if (isBin(player.cmd)) {
+      try {
+        which.sync(player.cmd);
         resolve(player);
+      }
+      catch( err ) {
       }
     }
 
